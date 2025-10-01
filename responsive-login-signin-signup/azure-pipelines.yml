@@ -1,0 +1,38 @@
+# Azure DevOps Pipeline for Zip Ride Project
+trigger:
+  - main
+
+pool:
+  name: 'Default'
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '18.x'
+    displayName: 'Install Node.js'
+
+  - script: npm install
+    displayName: 'Install backend dependencies'
+    workingDirectory: 'backend'
+
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.x'
+    displayName: 'Set up Python'
+
+  - script: |
+      python --version
+      pip install --upgrade pip
+    displayName: 'Check Python and pip'
+
+  # (Optional) Add your backend tests here
+  # - script: |
+  #     cd test/backend
+  #     npm test
+  #   displayName: 'Run backend tests'
+
+  # (Optional) Add your frontend build/test steps here
+
+  - script: |
+      echo "Pipeline completed!"
+    displayName: 'Finish'
