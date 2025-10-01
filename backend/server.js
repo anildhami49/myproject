@@ -24,6 +24,15 @@ const userSchema = new mongoose.Schema({
 });
 const User = mongoose.model('User', userSchema);
 
+// Get user info by username (for frontend to fetch email after login)
+app.get('/userinfo', async (req, res) => {
+  const { username } = req.query;
+  if (!username) return res.status(400).json({ message: 'Username required' });
+  const user = await User.findOne({ username });
+  if (!user) return res.status(404).json({ message: 'User not found' });
+  res.json({ username: user.username, email: user.email });
+});
+
 // Booking schema
 const bookingSchema = new mongoose.Schema({
   username: String, // or userId if you have it
